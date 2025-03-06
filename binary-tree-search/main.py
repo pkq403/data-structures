@@ -1,7 +1,10 @@
 from dataclasses import dataclass
 from typing import Optional, Callable
 import sys
-
+'''
+Binary Search Tree (BST) Python3 implementation
+Author: pkq403
+'''
 
 @dataclass
 class Node:
