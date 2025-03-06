@@ -3,6 +3,7 @@ from typing import Optional, Callable
 import sys
 '''
 Binary Search Tree (BST) Python3 implementation
+(test it in test.py file)
 Author: pkq403
 '''
 
