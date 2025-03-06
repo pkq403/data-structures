@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Type
+from typing import Optional, Callable
 
 
 @dataclass
@@ -14,6 +14,15 @@ class BinarySearchTree:
         self.root = Node(val=root_val)
 
     def search(self, val: int) -> bool:
+        '''
+        Search operation.
+        Search for a value in the BST.
+        
+        Returns
+        =======
+        True if value found
+        False if not found
+        '''
         def rsearch(node: Node) -> bool:
             if node is None:
                 return False
@@ -26,6 +35,12 @@ class BinarySearchTree:
         return rsearch(self.root)
 
     def insert(self, val: int) -> Node:
+        '''
+        Insert a new value in BST.
+        Returns
+        =======
+        the new tree with the inserted value.
+        '''
         def ins(node: Node):
             if node is None:
                 return Node(val)
@@ -38,6 +53,12 @@ class BinarySearchTree:
         return ins(self.root)
 
     def delete(self, val: int) -> Node:
+        '''
+        Delete a value from the BST.
+        Returns
+        =======
+        the new tree without that value
+        '''
         def get_successor(node: Node):
             cur = node.right
             while (next := cur.left) is not None:
@@ -66,38 +87,82 @@ class BinarySearchTree:
 
         return dele(self.root)
 
+    # Binary Tree Traversals (inorder, preorder and postorder)
+    def inorder(self, callback: Callable[[Node], None]):
+        def inord(node: Node):
+            if node is None:
+                return None
+            inord(node.left)
+            callback(node)
+            inord(node.right)
+        return inord(self.root)
+    
+    def preorder(self, callback: Callable[[Node], None]):
+        def preord(node: Node):
+            if node is None:
+                return None
+            callback(node)
+            preord(node.left)
+            preord(node.right)
+        return preord(self.root)
+    
+    def postorder(self, callback: Callable[[Node], None]):
+        def postord(node: Node):
+            if node is None:
+                return None
+            postord(node.left)
+            postord(node.right)
+            callback(node)
+        return postord(self.root)
+    
+    @staticmethod
+    def _print_node(node: Node):
+            print(f"{node.val}, ", end="")
+    
+    def print_inorder(self):
+        self.inorder(self._print_node)
+
+    def print_preorder(self):
+        self.preorder(self._print_node)
+
+    def print_postorder(self):
+        self.postorder(self._print_node)
+
     def __str__(self):
         bst_str = ""
 
-        def save(new_str: str):
+        def save(node: Node):
             nonlocal bst_str
-            bst_str += new_str
+            bst_str += str(node.val) + ", "
 
-        def inorder(node: Node):
-            if node is None:
-                return None
-            inorder(node.left)
-            save(str(node.val) + ", ")
-            inorder(node.right)
-
-        inorder(self.root)
+        self.inorder(save)
         return bst_str
 
 
 if __name__ == "__main__":
-    bst = BinarySearchTree(8)
-    bst.insert(4)
-    bst.insert(5)
+    bst = BinarySearchTree(100)
+    bst.insert(20)
+    bst.insert(200)
     bst.insert(10)
-    bst.insert(12)
-    bst.insert(14)
-    bst.insert(9)
-    # 4, 5, 8, 9, 10, 12
+    bst.insert(30)
+    bst.insert(150)
+    bst.insert(300)
+    # inorder: 10 20 30 100 150 200 300
+    # preorder: 100 20 10 30 200 150 300
+    # postorder: 10 30 20 150 300 200 100
+    print("[*] Binary Search Tree (report)")
+    print("(inorder): ")
+    bst.print_inorder()
+    print("(preorder): ")
+    bst.print_preorder()
+    print("(postorder): ")
+    bst.print_postorder()
+    print("")
 
-    print("BST: ", bst)
-    print("Search 5: ", bst.search(5))
-    print("Search 7: ", bst.search(7))
-    print("Search 12: ", bst.search(12))
+    print("BST (inorder): ", bst)
+    print("Search 20: ", bst.search(20))
+    print("Search 25: ", bst.search(25))
+    print("Search 30: ", bst.search(30))
 
     print("Deleting 10...")
     bst.delete(10)
