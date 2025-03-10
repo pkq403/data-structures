@@ -179,6 +179,17 @@ class BinarySearchTree:
 
         return find_ceil(self.root) or -1
 
+    def _leftMost(node: Node) -> Node:
+        if curr.left is None:
+            return curr
+        return leftMost(curr.left)
+
+    # Succesors
+    def inorder_succesor(self, val: int) -> int:
+        def inord_succ(node: Node):
+            pass
+        return inord_succ(self.root)
+
     # Binary Tree Traversals (inorder, preorder and postorder)
     def inorder(self, callback: Callable[[Node], None]):
         def inord(node: Node):
